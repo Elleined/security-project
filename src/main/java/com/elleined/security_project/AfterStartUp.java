@@ -31,16 +31,16 @@ public class AfterStartUp {
         Populator userPopulator = () -> userRepository.saveAll(List.of(
                 User.builder()
                         .name(faker.name().fullName())
-                        .email(faker.bothify("??##@gmail.com"))
+                        .email("admin")
                         .password(passwordEncoder.encode("admin"))
-                        .roles(List.of("ADMIN"))
+                        .roles(List.of("ROLE_ADMIN"))
                         .build(),
 
                 User.builder()
                         .name(faker.name().fullName())
-                        .email(faker.bothify("??##@gmail.com"))
+                        .email("user")
                         .password(passwordEncoder.encode("user"))
-                        .roles(List.of("USER"))
+                        .roles(List.of("ROLE_USER"))
                         .build()
         ));
 

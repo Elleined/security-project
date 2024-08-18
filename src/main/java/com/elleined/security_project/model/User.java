@@ -39,7 +39,7 @@ public class User extends PrimaryKeyIdentity implements UserDetails {
     )
     private String password;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "tbl_user_role",
             joinColumns = @JoinColumn(
