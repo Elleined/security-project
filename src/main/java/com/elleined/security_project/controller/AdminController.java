@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("/admins")
 @RequiredArgsConstructor
-public class BasicAuthController {
+public class AdminController {
 
     @GetMapping
-    public String basicAuth() {
-        return "Hello this endpoint should be secured";
+    public String get() {
+        return "THIS SHOULD ONLY BE ACCESSIBLE WITH ADMIN ROLE AND CANNOT BE ACCESS WITH USER ROLE";
     }
 }

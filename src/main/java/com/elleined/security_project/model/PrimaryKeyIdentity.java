@@ -24,11 +24,4 @@ public abstract class PrimaryKeyIdentity {
             unique = true
     )
     private int id;
-
-    @Column(
-            name = "created_at",
-            nullable = false,
-            updatable = false
-    )
-    private LocalDateTime createdAt;
 }

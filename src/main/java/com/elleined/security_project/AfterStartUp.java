@@ -39,7 +39,7 @@ public class AfterStartUp {
                 User.builder()
                         .name(faker.name().fullName())
                         .email(faker.bothify("??##@gmail.com"))
-                        .password(passwordEncoder.encode("admin"))
+                        .password(passwordEncoder.encode("user"))
                         .roles(List.of("USER"))
                         .build()
         ));

@@ -55,7 +55,7 @@ public class User extends PrimaryKeyIdentity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
+        return this.getRoles().stream()
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }
