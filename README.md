@@ -19,6 +19,7 @@ A project that covers custom configuration, role-based authorization, social log
 - Controls what resources does authenticated users can access. We dont want a regular users doing what admins can do right?.
 - Works after the user is authenticated via different authentication techniques. It check if the user have access/ permission to the specific operation.
 - hasAnyRole() method
+- hasRole() method
 
 ## Authorization Techniques
 - Role-based
@@ -29,6 +30,7 @@ A project that covers custom configuration, role-based authorization, social log
 - Works after authorization of the user via different authorization techniques, a fine grained permission it ensures that users with the same role have the right(claim) to do specific operation, thus providing granular control over what user can access.
 - Does this authorized user has the right/ claim to do this specific operation because claim are given to the user by the application.
 - hasAnyAuthority() method
+- hasAuthority() method
 
 ## Analogy
 - Just like when you have siblings(users), and your parents(application) will give properties(operations) with each one of their daughter/ son(users). Given that you are all their daughter/ son(users) meaning that your siblings doesn't automatically have a right(claim) in your property(operation).
