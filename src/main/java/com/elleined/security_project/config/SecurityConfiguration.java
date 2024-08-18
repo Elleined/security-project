@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,12 +20,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Only use for JWT
-                .httpBasic(Customizer.withDefaults())
+                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Only use for JWT
+                // .addFilterBefore(, UsernamePasswordAuthenticationFilter.class) // Only use for JWT
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/login/**", "/register/**").permitAll()
-                        .requestMatchers("/admins").hasRole("ADMIN")
-                        .requestMatchers("/users").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/role-authorization/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/role-authorization/user/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated())
                 .build();
     }
