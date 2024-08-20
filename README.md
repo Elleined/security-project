@@ -197,3 +197,4 @@ https://github.com/phegondev/users-management-system/blob/java-angular/backend/s
 [Customization of social login](https://www.baeldung.com/spring-security-5-oauth2-login)
 [Social Login Sample](https://delta-dev-software.fr/spring-boot-oauth2-social-login-with-google-facebook-twitter)
 [Social Login Customize](https://www.baeldung.com/spring-security-5-oauth2-login)
+[Social Login via defined API](https://vajithc.medium.com/implementing-social-logins-with-react-and-spring-boot-using-oauth2-5e7004edec8b)
