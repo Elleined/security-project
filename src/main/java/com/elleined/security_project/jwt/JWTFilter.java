@@ -1,6 +1,5 @@
-package com.elleined.security_project.config;
+package com.elleined.security_project.jwt;
 
-import com.elleined.security_project.service.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

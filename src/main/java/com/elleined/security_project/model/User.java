@@ -8,9 +8,13 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "tbl_user")
@@ -19,7 +23,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class User extends PrimaryKeyIdentity implements UserDetails {
+public class User extends PrimaryKeyIdentity implements UserDetails, OidcUser {
     @Column(
             name = "name",
             nullable = false
@@ -33,10 +37,7 @@ public class User extends PrimaryKeyIdentity implements UserDetails {
     )
     private String email;
 
-    @Column(
-            name = "password",
-            nullable = false
-    )
+    @Column(name = "password")
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -54,6 +55,11 @@ public class User extends PrimaryKeyIdentity implements UserDetails {
     private List<String> roles;
 
     @Override
+    public Map<String, Object> getAttributes() {
+        return Map.of();
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.getRoles().stream()
                 .map(SimpleGrantedAuthority::new)
@@ -68,5 +74,20 @@ public class User extends PrimaryKeyIdentity implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public Map<String, Object> getClaims() {
+        return Map.of();
+    }
+
+    @Override
+    public OidcUserInfo getUserInfo() {
+        return null;
+    }
+
+    @Override
+    public OidcIdToken getIdToken() {
+        return null;
     }
 }

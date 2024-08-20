@@ -1,4 +1,4 @@
-package com.elleined.security_project.service;
+package com.elleined.security_project.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
