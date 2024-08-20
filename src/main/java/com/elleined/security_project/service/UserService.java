@@ -12,19 +12,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -35,7 +34,6 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final DefaultOAuth2UserService oAuth2UserService;
-    private final OidcUserService oidcUserService;
 
     private final JWTService jwtService;
 
@@ -88,14 +86,23 @@ public class UserService {
                     .map(GrantedAuthority::getAuthority)
                     .toList();
 
-            if (this.isEmailExists(email))
-                return this.getByEmail(email);
+            if (this.isEmailExists(email)) {
+                Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
+                attributes.put("jwt-token", jwtService.generateToken(email));
 
-            return this.register(UserRequest.builder()
+                return new DefaultOAuth2User(oAuth2User.getAuthorities(), attributes, "email");
+            }
+
+            this.register(UserRequest.builder()
                     .name(name)
                     .email(email)
                     .roles(roles)
                     .build());
+
+            Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
+            attributes.put("jwt-token", jwtService.generateToken(email));
+
+            return new DefaultOAuth2User(oAuth2User.getAuthorities(), attributes, "email");
         };
     }
 }

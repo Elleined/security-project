@@ -11,23 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
     private final UserService userService;
 
-
-
     @PostMapping
     @ResponseBody
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password) {
 
         return userService.authenticate(email, password);
-    }
-
-    @GetMapping("/oauth/success")
-    public String successOAuthLogin() {
-        return "oauth-success";
-    }
-
-    @GetMapping("/oauth/failed")
-    public String failedOAuthLogin() {
-        return "oauth-failed";
     }
 }

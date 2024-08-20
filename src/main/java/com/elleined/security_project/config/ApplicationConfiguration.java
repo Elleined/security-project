@@ -44,11 +44,6 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public OidcUserService oidcUserService() {
-        return new OidcUserService();
-    }
-
-    @Bean
     public DefaultOAuth2UserService defaultOAuth2UserService() {
         return new DefaultOAuth2UserService();
     }

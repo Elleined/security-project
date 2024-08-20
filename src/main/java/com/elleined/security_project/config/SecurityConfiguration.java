@@ -33,8 +33,8 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // Only use for JWT
                 .oauth2Login(oc -> oc
                         // .loginPage("/login") // For custom login page but this is so complicated
-                        .defaultSuccessUrl("/login/oauth/success")
-                        .failureUrl("/login/oauth/failed")
+                        // .defaultSuccessUrl("/login/oauth/success") // For custom login page but this is so complicated
+                        // .failureUrl("/login/oauth/failed") // For custom login page but this is so complicated
                         .userInfoEndpoint(uiec -> uiec.userService(oauth2LoginService)))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/login/**", "/register/**").permitAll()
