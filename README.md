@@ -127,6 +127,66 @@ So in conclusion:
 5. After bloody validation the DispatcherServlet will now be called and the user request will get executed and function as normal like it intended it to do through Controllers, controllers to service, and so on...
 
 
+# Social login
+# Understanding the OAuth Concept
+![download_file (4)](https://github.com/Elleined/spring-oauth-social-login/assets/111877930/ebbba378-a499-4950-a38e-60823dedaec1)
+
+![download_file (3)](https://github.com/Elleined/spring-oauth-social-login/assets/111877930/742e3c9d-a265-4036-87b3-ba5d2a0da91c)
+
+![download_file (2)](https://github.com/Elleined/spring-oauth-social-login/assets/111877930/06a235f4-8bfc-41ef-a6ce-9dc8fb3acd5f)
+
+![download_file (1)](https://github.com/Elleined/spring-oauth-social-login/assets/111877930/4c3a29bf-bf8b-4b50-9261-de1f5277f453)
+
+## Redirect URL Template
+```
+// Template
+http://${host-ip-address}:${host-port}/${api-context-path}/login/oauth2/code/${social-name}
+
+// Sample
+http://localhost:8080/login/oauth2/code/google
+```
+
+# Users
+- OIDC for Social Login
+  - userId = primary key in social
+  - username = nickname in social
+- UserDetails for Form/ Database Login
+
+### Information you can get from UserDetails.java
+```java
+String getSubject()
+String getFullName()
+String getGivenName()
+String getFamilyName()
+String getMiddleName()
+String getNickName()
+String getPreferredUsername()
+String getProfile()
+String getPicture()
+String getWebsite()
+String getEmail()
+Boolean getEmailVerified()
+String getGender()
+String getBirthdate()
+String getZoneInfo()
+String getLocale()
+String getPhoneNumber()
+Boolean getPhoneNumberVerified()
+AddressStandardClaim getAddress()
+```
+
+# Client ID and Secret Key Creation
+
+# Useful Links
+[Github Repository](https://github.com/kanezi/spring-social-2-cloud)  
+[Youtube Tutorial](https://youtu.be/40BxatEr5aE?si=LHpunZDU9Bd96CK_)
+[Customization of social login](https://www.baeldung.com/spring-security-5-oauth2-login)
+[Social Login Sample](https://delta-dev-software.fr/spring-boot-oauth2-social-login-with-google-facebook-twitter)
+
+
+# Definition of Terms
+- `OIDC`: OpenID Connect.
+
 # Useful Links
 https://medium.com/@tericcabrel/implement-jwt
 -authentication-in-a-spring-boot-3-application-5839e4fd8fac
