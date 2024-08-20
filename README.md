@@ -175,15 +175,6 @@ Boolean getPhoneNumberVerified()
 AddressStandardClaim getAddress()
 ```
 
-# Client ID and Secret Key Creation
-
-# Useful Links
-[Github Repository](https://github.com/kanezi/spring-social-2-cloud)  
-[Youtube Tutorial](https://youtu.be/40BxatEr5aE?si=LHpunZDU9Bd96CK_)
-[Customization of social login](https://www.baeldung.com/spring-security-5-oauth2-login)
-[Social Login Sample](https://delta-dev-software.fr/spring-boot-oauth2-social-login-with-google-facebook-twitter)
-
-
 # Definition of Terms
 - `OIDC`: OpenID Connect.
 
@@ -199,3 +190,10 @@ https://www.javatpoint.com/authentication-vs-authorization
 
 https://github.com/phegondev/users-management-system/blob/java-angular/backend/src/main/java/com/phegondev/usersmanagementsystem/config/JWTAuthFilter.java
 
+
+###### Social Login Usefull links
+[Github Repository](https://github.com/kanezi/spring-social-2-cloud)  
+[Youtube Tutorial](https://youtu.be/40BxatEr5aE?si=LHpunZDU9Bd96CK_)
+[Customization of social login](https://www.baeldung.com/spring-security-5-oauth2-login)
+[Social Login Sample](https://delta-dev-software.fr/spring-boot-oauth2-social-login-with-google-facebook-twitter)
+[Social Login Customize](https://www.baeldung.com/spring-security-5-oauth2-login)
