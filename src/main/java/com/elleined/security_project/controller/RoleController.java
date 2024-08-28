@@ -9,14 +9,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/role-authorization")
 @RequiredArgsConstructor
 public class RoleController {
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "THIS SHOULD ONLY BE ACCESSIBLE WITH ADMIN ROLE AND CANNOT BE ACCESS WITH USER ROLE";
-    }
-
-    @GetMapping("/user")
-    public String user() {
-        return "THIS CAN BE ACCESSIBLE WITH ADMIN OR USER ROLE";
-    }
 }

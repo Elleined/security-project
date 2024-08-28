@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,5 +28,7 @@ public class UserRequest {
     private String password;
 
     @NotEmpty(message = "Please provide your roles")
-    private List<String> roles;
+    private Set<Integer> roleIds;
+
+    private Set<Integer> permissionIds;
 }

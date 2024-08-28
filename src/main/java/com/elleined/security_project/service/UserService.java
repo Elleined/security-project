@@ -1,7 +1,11 @@
 package com.elleined.security_project.service;
 
 import com.elleined.security_project.jwt.JWTService;
+import com.elleined.security_project.model.Permission;
+import com.elleined.security_project.model.Role;
 import com.elleined.security_project.model.User;
+import com.elleined.security_project.repository.PermissionRepository;
+import com.elleined.security_project.repository.RoleRepository;
 import com.elleined.security_project.repository.UserRepository;
 import com.elleined.security_project.request.UserRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -32,6 +34,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
 
     private final DefaultOAuth2UserService oAuth2UserService;
 
@@ -51,11 +55,15 @@ public class UserService {
     }
 
     public User register(UserRequest request) {
+        Set<Role> roles = new HashSet<>(roleRepository.findAllById(request.getRoleIds()));
+        Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(request.getPermissionIds()));
+
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .roles(request.getRoles())
+                .roles(roles)
+                .permissions(permissions)
                 .build();
 
         userRepository.save(user);
@@ -96,7 +104,8 @@ public class UserService {
             this.register(UserRequest.builder()
                     .name(name)
                     .email(email)
-                    .roles(roles)
+                    .roleIds(new HashSet<>())
+                    .permissionIds(new HashSet<>())
                     .build());
 
             Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());

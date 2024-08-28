@@ -38,8 +38,6 @@ public class SecurityConfiguration {
                         .userInfoEndpoint(uiec -> uiec.userService(oauth2LoginService)))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/login/**", "/register/**").permitAll()
-                        .requestMatchers("/role-authorization/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/role-authorization/user/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated())
                 .build();
     }
