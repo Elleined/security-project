@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -36,6 +38,21 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Page<Permission> getAll(Pageable pageable) {
         return permissionRepository.findAll(pageable);
+    }
+
+    @Override
+    public Permission getByName(String name) {
+        return permissionRepository.findByName(name).orElseThrow();
+    }
+
+    @Override
+    public List<Permission> getAllByName(List<String> names) {
+        return Collections.unmodifiableList(permissionRepository.findAllByName(names));
+    }
+
+    @Override
+    public List<Permission> getAllByName(String... names) {
+        return Collections.unmodifiableList(this.getAllByName(List.of(names)));
     }
 
     @Override

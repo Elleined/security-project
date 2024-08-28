@@ -14,6 +14,10 @@ public interface PermissionService {
     List<Permission> getAll();
     Page<Permission> getAll(Pageable pageable);
 
+    Permission getByName(String name);
+    List<Permission> getAllByName(List<String> names);
+    List<Permission> getAllByName(String... names);
+
     void addPermission(User user, Permission permission);
     void removePermission(User user, Permission permission);
 
@@ -25,15 +29,15 @@ public interface PermissionService {
         Stream.of(permissions).forEach(permission -> this.addPermission(user, permission));
     }
 
-    default boolean hasPermission(User user, Permission permission) {
+    static boolean hasPermission(User user, Permission permission) {
         return user.getPermissions().contains(permission);
     }
 
-    default boolean hasAnyPermission(User user, Permission... permissions) {
+    static boolean hasAnyPermission(User user, Permission... permissions) {
         return Stream.of(permissions).anyMatch(user.getPermissions()::contains);
     }
 
-    default boolean hasAnyPermission(User user, Collection<Permission> permissions) {
+    static boolean hasAnyPermission(User user, Collection<Permission> permissions) {
         return user.getPermissions().stream().anyMatch(permissions::contains);
     }
 }

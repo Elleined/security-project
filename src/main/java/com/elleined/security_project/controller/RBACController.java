@@ -3,6 +3,7 @@ package com.elleined.security_project.controller;
 import com.elleined.security_project.jwt.JWTService;
 import com.elleined.security_project.model.User;
 import com.elleined.security_project.repository.UserRepository;
+import com.elleined.security_project.service.resource.ResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class RBACController {
     private final UserRepository userRepository;
     private final JWTService jwtService;
+
+    private final ResourceService resourceService;
 
     @GetMapping("/admin")
     public String adminRole() {
@@ -23,7 +26,7 @@ public class RBACController {
         String email = jwtService.getEmail(jwt);
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        return "ADMIN ROLE WITH CREATE PERMISSION";
+        return resourceService.save(user);
     }
 
     @DeleteMapping("/admin/delete")
@@ -31,7 +34,7 @@ public class RBACController {
         String email = jwtService.getEmail(jwt);
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        return "ADMIN ROLE WITH DELETE PERMISSION";
+        return resourceService.delete(user);
     }
 
     @GetMapping("/user")
