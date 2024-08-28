@@ -12,7 +12,10 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "tbl_user")
@@ -38,7 +41,7 @@ public class User extends PrimaryKeyIdentity implements UserDetails, OidcUser {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tbl_user_role",
             joinColumns = @JoinColumn(
@@ -54,7 +57,7 @@ public class User extends PrimaryKeyIdentity implements UserDetails, OidcUser {
     )
     private Set<Role> roles;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tbl_user_permission",
             joinColumns = @JoinColumn(
@@ -77,22 +80,17 @@ public class User extends PrimaryKeyIdentity implements UserDetails, OidcUser {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> roles = this.getRoles().stream()
-                .map(Role::getName)
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+        return Stream.concat(
 
-        List<SimpleGrantedAuthority> permissions = this.getPermissions().stream()
-                .map(Permission::getName)
-                .map(name -> STR."ROLE_\{name}")
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+                this.getRoles().stream()
+                        .map(Role::getName)
+                        .map(SimpleGrantedAuthority::new),
 
-        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
-        simpleGrantedAuthorities.addAll(roles);
-        simpleGrantedAuthorities.addAll(permissions);
+                this.getPermissions().stream()
+                        .map(Permission::getName)
+                        .map(SimpleGrantedAuthority::new)
 
-        return simpleGrantedAuthorities;
+        ).toList();
     }
 
     @Override

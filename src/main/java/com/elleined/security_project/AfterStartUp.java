@@ -48,21 +48,29 @@ public class AfterStartUp {
 
         Populator permissionPopulator = () -> permissionRepository.saveAll(List.of(
                 Permission.builder()
-                        .name("RESOURCE:WRITE")
+                        .name("RESOURCE:CREATE")
                         .build(),
 
                 Permission.builder()
-                        .name("RESOURCE:READ")
+                        .name("RESOURCE:DELETE")
                         .build()
         ));
 
         Populator userPopulator = () -> userRepository.saveAll(List.of(
                 User.builder()
                         .name(faker.name().fullName())
-                        .email("admin")
-                        .password(passwordEncoder.encode("admin"))
+                        .email("cAdmin")
+                        .password(passwordEncoder.encode("cAdmin"))
                         .roles(Set.of(roleRepository.findById(1).orElseThrow(), roleRepository.findById(2).orElseThrow()))
-                        .permissions(Set.of(permissionRepository.findById(1).orElseThrow(), permissionRepository.findById(2).orElseThrow()))
+                        .permissions(Set.of(permissionRepository.findById(1).orElseThrow()))
+                        .build(),
+
+                User.builder()
+                        .name(faker.name().fullName())
+                        .email("dAdmin")
+                        .password(passwordEncoder.encode("dAdmin"))
+                        .roles(Set.of(roleRepository.findById(1).orElseThrow(), roleRepository.findById(2).orElseThrow()))
+                        .permissions(Set.of(permissionRepository.findById(2).orElseThrow()))
                         .build(),
 
                 User.builder()

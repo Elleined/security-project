@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 
 @Slf4j
@@ -43,9 +43,14 @@ public class ApplicationConfiguration {
         return new Faker();
     }
 
-    @Bean
+    @Bean // Enable OAuth2 Login
     public DefaultOAuth2UserService defaultOAuth2UserService() {
         return new DefaultOAuth2UserService();
+    }
+
+    @Bean // Removes the spring security required ROLE_ prefix in all your roles
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("");
     }
 
     @Bean

@@ -1,53 +1,55 @@
 package com.elleined.security_project.controller;
 
+import com.elleined.security_project.jwt.JWTService;
 import com.elleined.security_project.model.Permission;
 import com.elleined.security_project.model.User;
-import com.elleined.security_project.repository.PermissionRepository;
-import com.elleined.security_project.repository.UserRepository;
-import lombok.Getter;
+import com.elleined.security_project.service.UserService;
+import com.elleined.security_project.service.permission.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/permissions")
+@RequestMapping
 @RequiredArgsConstructor
 public class PermissionController {
+    private final PermissionService permissionService;
+    private final UserService userService;
 
-    private final PermissionRepository permissionRepository;
+    private final JWTService jwtService;
 
-    private final UserRepository userRepository;
-
-    @GetMapping("/{id}")
-    public Permission getById(@PathVariable("id") int id) {
-        return permissionRepository.findById(id).orElseThrow(() -> new RuntimeException("Permission with id of "));
-    }
-
-    @GetMapping
+    @GetMapping("/permissions")
     public List<Permission> getAll() {
-        return permissionRepository.findAll();
+        return permissionService.getAll();
     }
 
-    @PatchMapping("/{id}")
+    @GetMapping("/permissions/{id}")
+    public Permission getById(@PathVariable("id") int id) {
+        return permissionService.getById(id);
+    }
+
+    @PostMapping("/users/permissions/{id}")
     public void addPermission(@PathVariable("id") int id,
-                              @RequestParam("userId") int userId) {
+                              @RequestHeader("Authorization") String jwt) {
 
-        User user = userRepository.findById(userId).orElseThrow();
-        Permission permission = permissionRepository.findById(id).orElseThrow();
+        String email = jwtService.getEmail(jwt);
 
-        user.getPermissions().add(permission);
-        userRepository.save(user);
+        User user = userService.getByEmail(email);
+        Permission permission = permissionService.getById(id);
+
+        permissionService.addPermission(user, permission);
     }
 
-    @PatchMapping("/{id}")
+    @DeleteMapping("/users/permissions/{id}")
     public void removePermission(@PathVariable("id") int id,
-                                 @RequestParam("userId") int userId) {
+                                 @RequestHeader("Authorization") String jwt) {
 
-        User user = userRepository.findById(userId).orElseThrow();
-        Permission permission = permissionRepository.findById(id).orElseThrow();
+        String email = jwtService.getEmail(jwt);
 
-        user.getPermissions().remove(permission);
-        userRepository.save(user);
+        User user = userService.getByEmail(email);
+        Permission permission = permissionService.getById(id);
+
+        permissionService.removePermission(user, permission);
     }
 }

@@ -1,51 +1,55 @@
 package com.elleined.security_project.controller;
 
+import com.elleined.security_project.jwt.JWTService;
 import com.elleined.security_project.model.Role;
 import com.elleined.security_project.model.User;
-import com.elleined.security_project.repository.RoleRepository;
-import com.elleined.security_project.repository.UserRepository;
+import com.elleined.security_project.service.UserService;
+import com.elleined.security_project.service.role.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping
 @RequiredArgsConstructor
 public class RoleController {
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
+    private final UserService userService;
 
-    private final UserRepository userRepository;
+    private final JWTService jwtService;
 
-    @GetMapping("/{id}")
-    public Role getById(int id) {
-        return roleRepository.findById(id).orElseThrow(() -> new RuntimeException("Role with id of "));
-    }
-
-    @GetMapping
+    @GetMapping("/roles")
     public List<Role> getAll() {
-        return roleRepository.findAll();
+        return roleService.getAll();
     }
 
-    @PatchMapping("/{id}")
+    @GetMapping("/roles/{id}")
+    public Role getById(@PathVariable("id") int id) {
+        return roleService.getById(id);
+    }
+
+    @PostMapping("/users/roles/{id}")
     public void addRole(@PathVariable("id") int id,
-                        @RequestParam("userId") int userId) {
+                        @RequestHeader("Authorization") String jwt) {
 
-        User user = userRepository.findById(userId).orElseThrow();
-        Role role = roleRepository.findById(id).orElseThrow();
-        user.getRoles().add(role);
+        String email = jwtService.getEmail(jwt);
 
-        userRepository.save(user);
+        User user = userService.getByEmail(email);
+        Role role = roleService.getById(id);
+
+        roleService.addRole(user, role);
     }
 
-    @PatchMapping("/{id}")
+    @DeleteMapping("/users/roles/{id}")
     public void removeRole(@PathVariable("id") int id,
-                           @RequestParam("userId") int userId) {
+                           @RequestHeader("Authorization") String jwt) {
 
-        User user = userRepository.findById(userId).orElseThrow();
-        Role role = roleRepository.findById(id).orElseThrow();
-        user.getRoles().remove(role);
+        String email = jwtService.getEmail(jwt);
 
-        userRepository.save(user);
+        User user = userService.getByEmail(email);
+        Role role = roleService.getById(id);
+
+        roleService.removeRole(user, role);
     }
 }

@@ -32,10 +32,6 @@ public class JWTService {
     key = Base64.getEncoder().encodeToString(secretKey.getEncoded());
   }
 
-  public String getUsername(String token) {
-    return extractClaim(token, Claims::getSubject);
-  }
-
   private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
     final Claims claims = extractAllClaims(token);
     return claimsResolver.apply(claims);
@@ -60,8 +56,8 @@ public class JWTService {
   }
 
   public boolean isTokenValid(String token, UserDetails userDetails) {
-    final String username = this.getUsername(token);
-    return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    final String email = this.getEmail(token);
+    return (email.equals(userDetails.getUsername())) && !isTokenExpired(token.substring(7));
   }
 
   private boolean isTokenExpired(String token) {
@@ -83,5 +79,9 @@ public class JWTService {
   private SecretKey getSignInKey() {
     byte[] keyBytes = Decoders.BASE64.decode(key);
     return Keys.hmacShaKeyFor(keyBytes);
+  }
+
+  public String getEmail(String token) {
+    return extractClaim(token.substring(7), Claims::getSubject);
   }
 }
